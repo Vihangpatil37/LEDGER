@@ -1,0 +1,258 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Chai Ledger - Root Design Tokens
+   Strict adherence to CHAI_LEDGER_MULTI_AGENT_SPEC.md (Section 7.2)
+   Light theme only. No dark mode.
+   ========================================================================== */
+
+:root {
+  /* Color Tokens */
+  --paper: #F1F3EE;        /* Page background, cool newsprint */
+  --sheet: #FFFFFF;        /* Ledger pages, inputs, sheets */
+  --ink: #17212B;          /* Primary text, primary buttons */
+  --ink-soft: #4A5866;     /* Secondary text, timestamps, meta hints */
+  --rule: #C9D3DA;         /* Hairlines between ledger rows */
+  --rule-margin: #B84A42;  /* Khata margin double-rule only (red ink) */
+  --owed: #A3261F;         /* Udhaar amounts, money owed */
+  --paid: #1F6B4A;         /* Payments, advance */
+  --alert-ink: #8A5A00;     /* Alert text */
+  --alert-wash: #FBEFD0;    /* Alert row background */
+  --focus: #2457C5;        /* Focus ring outline */
+
+  /* Radii Tokens */
+  --radius-chip: 6px;      /* Amount chips (+10, +50), Note chips */
+  --radius-control: 10px;  /* Buttons, inputs, pickers */
+  --radius-sheet: 20px;    /* Top corners of bottom sheets only */
+
+  /* Touch Target */
+  --tap: 48px;             /* Minimum touch target */
+
+  /* shadcn/ui restyling: purged zinc defaults, mapped cleanly to Chai Ledger tokens */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--sheet);
+  --card-foreground: var(--ink);
+  --popover: var(--sheet);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--paper);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper);
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--alert-wash);
+  --accent-foreground: var(--alert-ink);
+  --destructive: var(--owed);
+  --destructive-foreground: #FFFFFF;
+  --border: var(--rule);
+  --input: var(--rule);
+  --ring: var(--focus);
+  --radius: var(--radius-control);
+}
+
+/* ==========================================================================
+   Base Rules
+   ========================================================================== */
+
+* {
+  border-color: var(--rule);
+}
+
+html {
+  color-scheme: light;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+   Typography & Numerics
+   ========================================================================== */
+
+/* Atkinson Hyperlegible Type Scale */
+.text-meta {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.text-body {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.text-list-name {
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.text-screen-title {
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.text-hero-figure {
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+/* Tabular numerals for money & numeric data */
+.tabular-nums,
+.money,
+[data-money],
+[data-numeric] {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Monospace is banned */
+code, pre, kbd, samp {
+  font-family: inherit;
+}
+
+/* ==========================================================================
+   Accessibility & Focus Outlines
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--focus) !important;
+  outline-offset: 2px !important;
+}
+
+/* Touch targets >= 48px */
+button,
+input,
+select,
+textarea,
+.tap-target {
+  min-height: var(--tap);
+}
+
+/* Touch target for quick-add chips */
+.chip-target {
+  min-height: 44px;
+}
+
+/* ==========================================================================
+   Khata Ledger Memorable Elements
+   ========================================================================== */
+
+/* Double vertical margin rule at the left (two 1px lines of --rule-margin, 3px apart, 12px from edge) */
+.khata-margin {
+  position: relative;
+  padding-left: 28px;
+}
+
+.khata-margin::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12px;
+  width: 1px;
+  background-color: var(--rule-margin);
+  pointer-events: none;
+}
+
+.khata-margin::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 16px; /* 12px + 1px + 3px gap = 16px */
+  width: 1px;
+  background-color: var(--rule-margin);
+  pointer-events: none;
+}
+
+/* Hairline rule between rows */
+.ruled-row {
+  border-bottom: 1px solid var(--rule);
+}
+
+.ruled-row:last-child {
+  border-bottom: none;
+}
+
+/* Bottom sheet soft shadow (sole allowed shadow) */
+.sheet-shadow {
+  box-shadow: 0 -4px 20px rgba(23, 33, 43, 0.08);
+}
+
+/* ==========================================================================
+   Motion Budget & Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  button:active:not(:disabled),
+  [role="button"]:active:not([aria-disabled="true"]),
+  .pressable:active {
+    transform: scale(0.98);
+    transition: transform 100ms ease-out;
+  }
+
+  .sheet-slide {
+    transition: transform 150ms ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+@layer utilities {
+  .bg-paper { background-color: var(--paper); }
+  .bg-sheet { background-color: var(--sheet); }
+  .bg-ink { background-color: var(--ink); }
+  .bg-ink-soft { background-color: var(--ink-soft); }
+  .bg-owed { background-color: var(--owed); }
+  .bg-paid { background-color: var(--paid); }
+  .bg-alert-wash { background-color: var(--alert-wash); }
+
+  .text-ink { color: var(--ink); }
+  .text-ink-soft { color: var(--ink-soft); }
+  .text-owed { color: var(--owed); }
+  .text-paid { color: var(--paid); }
+  .text-alert-ink { color: var(--alert-ink); }
+
+  .border-rule { border-color: var(--rule); }
+  .border-rule-margin { border-color: var(--rule-margin); }
+
+  .rounded-chip { border-radius: var(--radius-chip); }
+  .rounded-control { border-radius: var(--radius-control); }
+  .rounded-sheet {
+    border-top-left-radius: var(--radius-sheet);
+    border-top-right-radius: var(--radius-sheet);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
