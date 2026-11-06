@@ -50,6 +50,22 @@ export async function loginAction(
     });
 
     if (error) {
+      const authErrorMessage = (error.message || "").toLowerCase();
+      const isEmailNotConfirmed =
+        authErrorMessage.includes("not confirmed") ||
+        authErrorMessage.includes("unconfirmed") ||
+        authErrorMessage.includes("confirm your email");
+
+      if (isEmailNotConfirmed) {
+        return {
+          ok: false,
+          error: {
+            code: "EMAIL_NOT_CONFIRMED",
+            message: "Confirm your email before logging in.",
+          },
+        };
+      }
+
       return {
         ok: false,
         error: {

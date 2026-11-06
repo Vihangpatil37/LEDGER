@@ -19,6 +19,7 @@ const ERROR_MESSAGES: Record<AppErrorCode, string> = {
   CANNOT_REVERSE_REVERSAL: "Cannot reverse a reversal entry.",
   NO_BALANCE_DUE: "Nothing is due.",
   INVALID_CREDENTIALS: "Email or password is wrong.",
+  EMAIL_NOT_CONFIRMED: "Confirm your email before logging in.",
   INTERNAL: "Could not save. Nothing was changed. Try again.",
 };
 
